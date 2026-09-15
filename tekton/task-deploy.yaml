@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: tax-calculator-deploy
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/categories: Deployment
+    tekton.dev/tags: "kubernetes, deploy"
+    tekton.dev/displayName: "Deploy Tax Calculator to Cluster"
+spec:
+  description: >-
+    Applies the Kubernetes deployment and service manifests to deploy the Tax Calculator web app.
+  params:
+    - name: MANIFEST_DIR
+      type: string
+      description: Directory containing deployment and service manifests
+      default: deploy
+  workspaces:
+    - name: source
+      description: Git repository workspace
+  steps:
+    - name: kubectl-deploy
+      image: bitnami/kubectl:latest
+      workingDir: $(workspaces.source.path)
+      script: |
+        #!/bin/sh
+        set -e
+        echo "=== Deploying Tax Calculator to Kubernetes / IBM Cloud ==="
+        kubectl apply -f $(params.MANIFEST_DIR)/
+        echo "=== Checking Rollout Status ==="
+        kubectl rollout status deployment/tax-calculator-deployment --timeout=120s
+        echo "=== Tax Calculator Deployed Successfully! ==="

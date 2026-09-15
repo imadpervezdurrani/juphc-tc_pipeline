@@ -1,0 +1,74 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: tax-calculator-pipeline
+  labels:
+    app: tax-calculator
+spec:
+  description: >-
+    End-to-End CI/CD Pipeline for Tax Calculator Application:
+    Clones git source, executes Jasmine unit tests, builds container image,
+    pushes to IBM Cloud Container Registry, and deploys to Kubernetes cluster.
+  workspaces:
+    - name: shared-workspace
+      description: Workspace shared across all pipeline tasks
+  params:
+    - name: repo-url
+      type: string
+      description: Git repository URL
+      default: "https://github.com/imadpervezdurrani/Tax-Calculator-app.git"
+    - name: branch
+      type: string
+      description: Git branch name
+      default: "main"
+    - name: image-name
+      type: string
+      description: Container image tag for IBM Cloud Registry
+      default: "icr.io/tax-calculator-namespace/tax-calculator:latest"
+
+  tasks:
+    # Task 1: Clone Git Repository
+    - name: fetch-source
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+      params:
+        - name: url
+          value: $(params.repo-url)
+        - name: revision
+          value: $(params.branch)
+
+    # Task 2: Run Jasmine Unit Tests
+    - name: run-unit-tests
+      runAfter:
+        - fetch-source
+      taskRef:
+        name: tax-calculator-unit-test
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    # Task 3: Build & Push Container Image
+    - name: build-and-push-image
+      runAfter:
+        - run-unit-tests
+      taskRef:
+        name: tax-calculator-build-image
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+      params:
+        - name: IMAGE
+          value: $(params.image-name)
+
+    # Task 4: Deploy Container to Kubernetes / IBM Cloud
+    - name: deploy-to-cluster
+      runAfter:
+        - build-and-push-image
+      taskRef:
+        name: tax-calculator-deploy
+      workspaces:
+        - name: source
+          workspace: shared-workspace

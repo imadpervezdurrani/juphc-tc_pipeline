@@ -1,0 +1,40 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: tax-calculator-build-image
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/categories: Build
+    tekton.dev/tags: "docker, build, icr"
+    tekton.dev/displayName: "Build and Push Tax Calculator Image"
+spec:
+  description: >-
+    Builds the Tax Calculator Docker container image and pushes it to IBM Cloud Container Registry.
+  params:
+    - name: IMAGE
+      type: string
+      description: The destination image URL in IBM Cloud Registry (e.g. icr.io/namespace/tax-calculator:latest)
+    - name: DOCKERFILE
+      type: string
+      description: Path to the Dockerfile
+      default: ./Dockerfile
+    - name: CONTEXT
+      type: string
+      description: Build context path
+      default: .
+  workspaces:
+    - name: source
+      description: Git repository workspace
+  steps:
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:v1.14.0-debug
+      workingDir: $(workspaces.source.path)
+      command:
+        - /kaniko/executor
+      args:
+        - --dockerfile=$(params.DOCKERFILE)
+        - --context=$(workspaces.source.path)/$(params.CONTEXT)
+        - --destination=$(params.IMAGE)
+        - --skip-tls-verify
