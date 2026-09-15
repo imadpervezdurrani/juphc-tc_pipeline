@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: tax-calculator-pipelinerun-
+  labels:
+    app: tax-calculator
+spec:
+  pipelineRef:
+    name: tax-calculator-pipeline
+  params:
+    - name: repo-url
+      value: "https://github.com/imadpervezdurrani/Tax-Calculator-app.git"
+    - name: branch
+      value: "main"
+    - name: image-name
+      value: "icr.io/tax-calculator-namespace/tax-calculator:latest"
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
