@@ -27,25 +27,22 @@ https://github.com/imadpervezdurrani/Tax-Calculator-app/blob/main/spec/taxCalcul
 
 #### Terminal Command:
 ```bash
-npm test
+npx jasmine
 ```
 
 #### Terminal Output:
 ```text
-> tax-calculator-app@1.0.0 test
-> jasmine
-
 Started
-..........
+.......
 
 
-10 specs, 0 failures
-Finished in 0.014 seconds
+7 specs, 0 failures
+Finished in 0.012 seconds
 ```
 
 #### Screenshot Guide (if required):
-- Open your terminal after running `npm test`.
-- Capture the command `npm test` showing `10 specs, 0 failures`. Save as `jasmine_unit_tests.png`.
+- Open your terminal after running `npx jasmine`.
+- Capture the command `npx jasmine` and the output showing `7 specs, 0 failures`. Save as `jasmine_unit_tests.png`.
 
 ---
 
