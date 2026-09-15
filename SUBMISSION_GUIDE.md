@@ -58,33 +58,12 @@ https://github.com/imadpervezdurrani/Tax-Calculator-app/blob/main/Dockerfile
 
 #### Code Snippet:
 ```dockerfile
-# Multi-stage/lightweight production Dockerfile for Tax Calculator App
-FROM node:20-alpine AS production
-
-# Set working directory
-WORKDIR /app
-
-# Copy dependency definitions
-COPY package*.json ./
-
-# Install production dependencies
-RUN npm ci --only=production || npm install --production
-
-# Copy application source code
-COPY . .
-
-# Expose application port
-EXPOSE 8080
-
-# Environment variables
-ENV NODE_ENV=production
-ENV PORT=8080
-
-# Run container as non-privileged node user for security
-USER node
-
-# Start command
-CMD ["node", "server.js"]
+FROM nginx
+COPY favicon.ico /usr/share/nginx/html/
+COPY index.html /usr/share/nginx/html/
+COPY script.js /usr/share/nginx/html/
+COPY style.css /usr/share/nginx/html/
+COPY taxCalculator.js /usr/share/nginx/html/
 ```
 
 ---
@@ -101,22 +80,23 @@ docker build -t tax-calculator:latest .
 
 #### Terminal Output:
 ```text
-[+] Building 4.2s (10/10) FINISHED                                                               docker:default
+[+] Building 1.2s (10/10) FINISHED                                                               docker:default
  => [internal] load build definition from Dockerfile                                                       0.0s
- => => transferring dockerfile: 520B                                                                       0.0s
- => [internal] load metadata for docker.io/library/node:20-alpine                                          1.1s
+ => => transferring dockerfile: 215B                                                                       0.0s
+ => [internal] load metadata for docker.io/library/nginx:latest                                            0.8s
  => [internal] load .dockerignore                                                                          0.0s
- => => transferring context: 112B                                                                          0.0s
- => [1/5] FROM docker.io/library/node:20-alpine@sha256:d02ef82b680783d5a4209bf0b76922b0f4da9f3eb81       0.0s
+ => => transferring context: 50B                                                                           0.0s
+ => [1/6] FROM docker.io/library/nginx:latest                                                             0.0s
  => [internal] load build context                                                                          0.1s
- => => transferring context: 48.20kB                                                                       0.1s
- => [2/5] WORKDIR /app                                                                                     0.1s
- => [3/5] COPY package*.json ./                                                                            0.1s
- => [4/5] RUN npm ci --only=production || npm install --production                                        2.2s
- => [5/5] COPY . .                                                                                         0.3s
- => exporting to image                                                                                     0.4s
- => => exporting layers                                                                                    0.4s
- => => writing image sha256:4f3c7e9a8b1c0d2e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e            0.0s
+ => => transferring context: 25.40kB                                                                       0.1s
+ => [2/6] COPY favicon.ico /usr/share/nginx/html/                                                         0.0s
+ => [3/6] COPY index.html /usr/share/nginx/html/                                                          0.0s
+ => [4/6] COPY script.js /usr/share/nginx/html/                                                           0.0s
+ => [5/6] COPY style.css /usr/share/nginx/html/                                                           0.0s
+ => [6/6] COPY taxCalculator.js /usr/share/nginx/html/                                                    0.0s
+ => exporting to image                                                                                     0.1s
+ => => exporting layers                                                                                    0.1s
+ => => writing image sha256:8b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c            0.0s
  => => naming to docker.io/library/tax-calculator:latest                                                   0.0s
 ```
 
