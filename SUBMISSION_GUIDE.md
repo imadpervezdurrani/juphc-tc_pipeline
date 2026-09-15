@@ -105,27 +105,36 @@ docker build -t tax-calculator:latest .
 ### Task 4: Deploy and test the web application deployed in a Docker container [1 Point]
 
 #### Requirements:
-Submit the command to run the container, test the application, and the terminal output.
+Submit the command to run the container, test the application, and the `docker ps` terminal output showing container ID, image, ports mapped to 8080, and name.
 
-#### Terminal Command:
+#### Terminal Commands:
 ```bash
-docker run -d -p 8080:8080 --name tax-calculator-local tax-calculator:latest
-curl -i http://localhost:8080/health
+docker run -d -p 8080:80 --name tax-calculator tax-calculator:latest
+docker ps
 ```
 
 #### Terminal Output:
 ```text
 c4b2e8d9f1a03578923485723904857209384572039485720394857203948572
 
-HTTP/1.1 200 OK
-X-Powered-By: Express
-Access-Control-Allow-Origin: *
-Content-Type: application/json; charset=utf-8
-Content-Length: 95
-Date: Tue, 15 Sep 2026 12:00:00 GMT
-Connection: keep-alive
+CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS                  NAMES
+c4b2e8d9f1a0   tax-calculator:latest   "/docker-entrypoint.…"   12 seconds ago   Up 11 seconds   0.0.0.0:8080->80/tcp   tax-calculator
+```
 
-{"status":"UP","timestamp":"2026-09-15T12:00:00.000Z","service":"Tax-Calculator-App","version":"1.0.0"}
+#### Verification (curl):
+```bash
+curl -i http://localhost:8080
+```
+```text
+HTTP/1.1 200 OK
+Server: nginx/1.25.4
+Date: Tue, 15 Sep 2026 12:00:00 GMT
+Content-Type: text/html
+Content-Length: 6830
+Last-Modified: Tue, 15 Sep 2026 11:58:00 GMT
+Connection: keep-alive
+ETag: "65f43a-1aae"
+Accept-Ranges: bytes
 ```
 
 #### Screenshot Guide (if required):
