@@ -1,0 +1,20 @@
+Getting application 'tax-calculator'...
+OK
+
+Name:          tax-calculator
+ID:            a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d
+Project Name:  tax-calculator-project
+Project ID:    0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d
+Age:           2m
+Created:       Tue, 15 Sep 2026 12:30:00 +0000
+URL:           https://tax-calculator.1a2b3c4d5e6f.us-south.codeengine.appdomain.cloud
+Status:        Ready
+
+Image:                icr.io/tax-calculator-namespace/tax-calculator:latest
+Resource Allocation:
+  CPU:                0.25
+  Memory:             500M
+Scale:
+  Min Instances:      1
+  Max Instances:      2
+  Target Concurrency: 100

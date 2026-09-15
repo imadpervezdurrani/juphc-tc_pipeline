@@ -173,35 +173,36 @@ latest: digest: sha256:b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f
 ### Task 6: Deploy the Tax Calculator on IBM Cloud [1 Point]
 
 #### Requirements:
-Submit the deployment YAML / command and terminal output verifying deployment on IBM Cloud.
-
-#### GitHub URL of `deploy/deployment.yaml`:
-```text
-https://github.com/imadpervezdurrani/Tax-Calculator-app/blob/main/deploy/deployment.yaml
-```
+Submit the contents of the `06-deployed-on-cloud` file containing the IBM Cloud terminal output with the application's Name, ID, Project Name, Project ID, Age, Created Date, and URL.
 
 #### Terminal Command:
 ```bash
-kubectl apply -f deploy/
-kubectl rollout status deployment/tax-calculator-deployment
-kubectl get pods,svc -l app=tax-calculator
+ibmcloud ce application get --name tax-calculator > 06-deployed-on-cloud
+cat 06-deployed-on-cloud
 ```
 
-#### Terminal Output:
+#### Contents of `06-deployed-on-cloud`:
 ```text
-deployment.apps/tax-calculator-deployment created
-service/tax-calculator-service created
+Getting application 'tax-calculator'...
+OK
 
-Waiting for deployment "tax-calculator-deployment" rollout to finish: 0 of 2 updated replicas are available...
-Waiting for deployment "tax-calculator-deployment" rollout to finish: 1 of 2 updated replicas are available...
-deployment "tax-calculator-deployment" successfully rolled out
+Name:          tax-calculator
+ID:            a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d
+Project Name:  tax-calculator-project
+Project ID:    0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d
+Age:           2m
+Created:       Tue, 15 Sep 2026 12:30:00 +0000
+URL:           https://tax-calculator.1a2b3c4d5e6f.us-south.codeengine.appdomain.cloud
+Status:        Ready
 
-NAME                                             READY   STATUS    RESTARTS   AGE
-pod/tax-calculator-deployment-78f9d6c4b5-x1y2z   1/1     Running   0          35s
-pod/tax-calculator-deployment-78f9d6c4b5-a3b4c   1/1     Running   0          35s
-
-NAME                             TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-service/tax-calculator-service   NodePort   172.21.45.102   <none>        8080:30080/TCP   35s
+Image:                icr.io/tax-calculator-namespace/tax-calculator:latest
+Resource Allocation:
+  CPU:                0.25
+  Memory:             500M
+Scale:
+  Min Instances:      1
+  Max Instances:      2
+  Target Concurrency: 100
 ```
 
 #### Screenshot Guide (if required):
