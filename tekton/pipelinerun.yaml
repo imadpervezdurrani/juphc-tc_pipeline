@@ -9,7 +9,7 @@ spec:
     name: tax-calculator-pipeline
   params:
     - name: repo-url
-      value: "https://github.com/imadpervezdurrani/Tax-Calculator-app.git"
+      value: "https://github.com/imadpervezdurrani/juphc-tc_pipeline.git"
     - name: branch
       value: "main"
     - name: image-name

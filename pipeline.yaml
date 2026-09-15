@@ -16,7 +16,7 @@ spec:
     - name: repo-url
       type: string
       description: Git repository URL
-      default: "https://github.com/imadpervezdurrani/Tax-Calculator-app.git"
+      default: "https://github.com/imadpervezdurrani/juphc-tc_pipeline.git"
     - name: branch
       type: string
       description: Git branch name
